@@ -100,15 +100,8 @@
         	#Igualamos el valor del producto resultante al _aux2 para que la subrutina suma_recur pueda trabajar
         	move _aux2, $v1
 
-        	#Iniciamos _aux3 a 0 y llamamos a la subrutina suma_recur
-        	move _aux3, $zero
+        	#Llamamos a la subrutina suma_recur
         	jal suma_recur
-
-		#Aprovechamos el registro _aux3 para sumar y acumular los resultados de la subrutina suma_recur
-		add _aux3, _aux3, $v1
-		
-		#igualamos $v1 a _aux3 ya que es la salida de nuestra subrutina
-		move $v1, _aux3
 
         	# Recuperamos $ra de la pila para salir de la subrutina
         	lw $ra, 0($sp)
@@ -146,15 +139,8 @@
         	#Igualamos el valor de la potencia resultante al _aux3 para que la subrutina potencia_recur pueda trabajar
         	move _aux3, $v1
 
-        	#Iniciamos _aux4 a 0 y llamamos a la subrutina potencia_recur
-        	move _aux4, $zero
+        	#Llamamos a la subrutina potencia_recur
         	jal producto_recur
-
-		#Aprovechamos el registro _aux4 para sumar y acumular los resultados de la subrutina potencia_recur
-		add _aux4, _aux4, $v1
-		
-		#igualamos $v1 a _aux4 ya que es la salida de nuestra subrutina
-		move $v1, _aux4
 
         	# Recuperamos $ra de la pila para salir de la subrutina
         	lw $ra, 0($sp)
