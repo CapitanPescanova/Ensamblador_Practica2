@@ -2,7 +2,7 @@
 ## DECLARACION ALIAS ##
 #######################
 .eqv _b 2
-.eqv _e 3
+.eqv _e 7
 
 .eqv _aux1, $t0
 .eqv _aux2, $t1
@@ -21,9 +21,9 @@
 ########################
 .text 
 	add _aux1, $zero, _b
-	add _aux3, $zero, _e
+	add _aux4, $zero, _e
 
-	jal producto_recur
+	jal potencia_recur
 
 		# Indicamos al sistema que vamos a imprimir string
 		li $v0, 1
@@ -43,6 +43,7 @@
 #################
 ## SUB-RUTINAS ##
 #################
+
 
 
 	##SUMA RECURSIVA##
@@ -82,6 +83,7 @@
 		jr $ra
 	
 	
+	
 	##PRODUCTO RECURSIVO##
 	producto_recur:
     	#Guardamos $ra en la pila cada vez que entremos en la subrutina
@@ -118,6 +120,52 @@
 	else_product:
     		# Si el segundo producto es igual a 0 establecemos en $v1 el valor cero
     		li $v1, 0
+   
+    		# Recuperamos $ra de la pila para salir de la subrutina
+    		lw $ra, 0($sp)
+    		addi $sp, $sp, 4
+    
+    		# Salimos de la subrutina
+    		jr $ra
+
+
+
+	##POTENCIA RECURSIVA##
+	potencia_recur:
+    	#Guardamos $ra en la pila cada vez que entremos en la subrutina
+    	addi $sp, $sp, -4
+    	sw $ra, 0($sp)
+    
+    	#Comprobamos que el exponente sea igual a 0 
+   	beqz _aux4, else_potencia
+
+        	#Si no es igual a 0 restamos uno al exponente y volvemos a llamar a la subrutina
+        	add _aux4, _aux4, -1
+               	jal potencia_recur
+        	
+        	#Igualamos el valor de la potencia resultante al _aux3 para que la subrutina potencia_recur pueda trabajar
+        	move _aux3, $v1
+
+        	#Iniciamos _aux4 a 0 y llamamos a la subrutina potencia_recur
+        	move _aux4, $zero
+        	jal producto_recur
+
+		#Aprovechamos el registro _aux4 para sumar y acumular los resultados de la subrutina potencia_recur
+		add _aux4, _aux4, $v1
+		
+		#igualamos $v1 a _aux4 ya que es la salida de nuestra subrutina
+		move $v1, _aux4
+
+        	# Recuperamos $ra de la pila para salir de la subrutina
+        	lw $ra, 0($sp)
+        	addi $sp, $sp, 4
+        
+        	# Salimos de la subrutina
+        	jr $ra
+
+	else_potencia:
+    		# Si el exponente es igual a 0 establecemos en $v1 el valor uno
+    		li $v1, 1
    
     		# Recuperamos $ra de la pila para salir de la subrutina
     		lw $ra, 0($sp)
