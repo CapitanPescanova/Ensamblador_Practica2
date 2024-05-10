@@ -1,7 +1,7 @@
 #######################
 ## DECLARACION ALIAS ##
 #######################
-.eqv _b 3
+.eqv _b 4
 .eqv _e 4
 
 .eqv _base_global, $t0
@@ -9,12 +9,9 @@
 .eqv _factor, $t2
 .eqv _exponente, $t3
 
-
 ###########################
 ## DECLARACION VARIABLES ##
 ###########################
-.data
-
 
 ########################
 ## CODIGO DE EJECUCON ##
