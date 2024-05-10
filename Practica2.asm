@@ -1,13 +1,13 @@
 #######################
 ## DECLARACION ALIAS ##
 #######################
-.eqv _b 2
-.eqv _e 7
+.eqv _b 3
+.eqv _e 4
 
-.eqv _aux1, $t0
-.eqv _aux2, $t1
-.eqv _aux3, $t2
-.eqv _aux4, $t3
+.eqv _base_global, $t0
+.eqv _sumando, $t1
+.eqv _factor, $t2
+.eqv _exponente, $t3
 
 
 ###########################
@@ -20,8 +20,8 @@
 ## CODIGO DE EJECUCON ##
 ########################
 .text 
-	add _aux1, $zero, _b
-	add _aux4, $zero, _e
+	add _base_global, $zero, _b
+	add _exponente, $zero, _e
 
 	jal potencia_recur
 
@@ -53,10 +53,10 @@
 	sw $ra, 0($sp)
 	
 	#Comprobamos que el segundo sumando sea igual a 0 
-	beqz _aux2, else_sum
+	beqz _sumando, else_sum
 	
 		#Si no es igual a 0 restamos uno al segundo sumando y volvemos a llamar a la subrutina
-		add _aux2, _aux2, -1
+		add _sumando, _sumando, -1
 		
 		#Llamamos a la misma sub-rutina
 		jal suma_recur
@@ -73,7 +73,7 @@
 	
 	else_sum:
 		#Si el segundo sumando es igual a 0 establecemos en $v1 el valor del primer sumando
-		move $v1, _aux1
+		move $v1, _base_global
 		
 		#recuperamos $ra de la pila para salir de la subrutina
 		lw $ra, 0($sp)
@@ -91,14 +91,14 @@
     	sw $ra, 0($sp)
     
     	#Comprobamos que el segundo factor sea igual a 0 
-   	beqz _aux3, else_product
+   	beqz _factor, else_product
 
         	#Si no es igual a 0 restamos uno al segundo factor y volvemos a llamar a la subrutina
-        	add _aux3, _aux3, -1
+        	add _factor, _factor, -1
                	jal producto_recur
         	
-        	#Igualamos el valor del producto resultante al _aux2 para que la subrutina suma_recur pueda trabajar
-        	move _aux2, $v1
+        	#Igualamos el valor del producto resultante al _sumando para que la subrutina suma_recur pueda trabajar
+        	move _sumando, $v1
 
         	#Llamamos a la subrutina suma_recur
         	jal suma_recur
@@ -130,14 +130,14 @@
     	sw $ra, 0($sp)
     
     	#Comprobamos que el exponente sea igual a 0 
-   	beqz _aux4, else_potencia
+   	beqz _exponente, else_potencia
 
         	#Si no es igual a 0 restamos uno al exponente y volvemos a llamar a la subrutina
-        	add _aux4, _aux4, -1
+        	add _exponente, _exponente, -1
                	jal potencia_recur
         	
-        	#Igualamos el valor de la potencia resultante al _aux3 para que la subrutina potencia_recur pueda trabajar
-        	move _aux3, $v1
+        	#Igualamos el valor de la potencia resultante al _factor para que la subrutina producto_recur pueda trabajar
+        	move _factor, $v1
 
         	#Llamamos a la subrutina potencia_recur
         	jal producto_recur
